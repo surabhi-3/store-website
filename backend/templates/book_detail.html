@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            {% if book.image %}
+            <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+            {% else %}
+            <img src="https://via.placeholder.com/300x400?text=No+Image" class="card-img-top" alt="No image">
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h2>{{ book.title }}</h2>
+        <p class="text-muted">by {{ book.author }}</p>
+        <h4>₹{{ book.price }}</h4>
+        <p>{{ book.description }}</p>
+
+        <form method="post" action="{% url 'add_to_cart' book.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+        </form>
+
+        <a href="{% url 'book_list' %}" class="btn btn-outline-secondary mt-3">Back to Books</a>
+    </div>
+</div>
+{% endblock %}

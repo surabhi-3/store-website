@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left: Checkout Form -->
+        <div class="col-md-8">
+            <h2 class="mb-4">💳 Checkout</h2>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Shipping Address</label>
+                    <textarea id="address" name="address" rows="3" class="form-control" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="payment" class="form-label">Payment Method</label>
+                    <select id="payment" name="payment" class="form-select" required>
+                        <option value="">-- Select --</option>
+                        <option value="cod">Cash on Delivery</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="upi">UPI</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg w-100">🚀 Place Order</button>
+            </form>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="col-md-4">
+            <h4 class="mb-3">🛒 Order Summary</h4>
+            {% if cart %}
+            <ul class="list-group mb-3 shadow-sm">
+                {% for item in cart %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ item.book.title }} (x{{ item.quantity }})
+                    <span>₹{{ item.total }}</span>
+                </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <strong>Total</strong>
+                    <strong>₹{{ grand_total }}</strong>
+                </li>
+            </ul>
+            {% else %}
+            <div class="alert alert-warning">
+                Your cart is empty. <a href="{% url 'book_list' %}">Browse books</a>.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

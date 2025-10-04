@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>🛒 Your Shopping Cart</h2>
+
+    {% if cart %}
+    <table class="table table-hover shadow rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="cart-body">
+            {% for book_id, item in cart.items %}
+            <tr id="row-{{ book_id }}">
+                <td>{{ item.title }}</td>
+                <td>
+                    <input type="number" class="form-control w-50 quantity-input" value="{{ item.quantity }}" min="1"
+                        data-book-id="{{ book_id }}">
+                </td>
+                <td>₹{{ item.price }}</td>
+                <td class="item-total">₹{{ item.total }}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger remove-btn" data-book-id="{{ book_id }}">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4 class="text-end">Grand Total: <strong id="grand-total">₹{{ grand_total }}</strong></h4>
+    <div class="text-end">
+        <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+
+<!-- ✅ AJAX Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Update quantity
+        document.querySelectorAll(".quantity-input").forEach(input => {
+            input.addEventListener("change", () => {
+                const bookId = input.dataset.bookId;
+                const quantity = input.value;
+
+                fetch(`/cart/update/${bookId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `quantity=${quantity}`
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        document.querySelector(`#row-${bookId} .item-total`).textContent = `₹${data.item_total}`;
+                        document.querySelector("#grand-total").textContent = `₹${data.grand_total}`;
+                    });
+            });
+        });
+
+        // Remove item
+        document.querySelectorAll(".remove-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const bookId = btn.dataset.bookId;
+
+                fetch(`/cart/remove/${bookId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        document.querySelector(`#row-${bookId}`).remove();
+                        document.querySelector("#grand-total").textContent = `₹${data.grand_total}`;
+                    });
+            });
+        });
+    });
+</script>
+{% endblock %}
