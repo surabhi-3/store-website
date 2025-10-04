@@ -95,6 +95,46 @@
     {% endfor %}
 </div>
 
+<footer class="bg-dark text-white mt-5 pt-5 pb-4">
+    <div class="container">
+
+        <div class="row">
+
+            <!-- About Section -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold"><i class="fa-solid fa-book-open"></i> BookVerse</h5>
+                <p>
+                    Your one-stop online bookstore for English & Hindi books.
+                    Browse, buy, and enjoy reading from the comfort of your home.
+                </p>
+            </div>
+
+           
+
+            <!-- Contact Info -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold">Contact Us</h5>
+                <p><i class="fa-solid fa-envelope"></i> support@bookverse.com</p>
+                <p><i class="fa-solid fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fa-solid fa-location-dot"></i> 123 Book Street, Patna, India</p>
+                <div>
+                    <a href="#" class="text-white me-2"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="bg-white">
+
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 BookVerse. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
 </div>
 
 
@@ -166,5 +206,33 @@
             height: 220px;
         }
     }
+
+
+
+footer p,
+footer h5 {
+    margin-bottom: 10px;
+}
+
+footer .fa-lg {
+    transition: color 0.3s;
+}
+
+footer .fa-lg:hover {
+    color: #ffc107;
+}
+
+
+footer input[type="email"] {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+footer button {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+footer form .form-control {
+    max-width: 300px;
+}
 </style>
 {% endblock %}
